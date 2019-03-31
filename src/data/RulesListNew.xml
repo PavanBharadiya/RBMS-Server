@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RuleList>
+    <Rule>
+        <LHS>
+            <element>Balance</element>
+            <operation>&gt;=</operation>
+            <table>Account1</table>
+            <type>RT</type>
+            <value>1000</value>
+        </LHS>
+        <RHS>
+            <action>SQL1</action>
+        </RHS>
+    </Rule>
+    <Rule>
+        <LHS>
+            <element>Balance</element>
+            <operation>&gt;=</operation>
+            <table>Account2</table>
+            <type>RT</type>
+            <value>2000</value>
+        </LHS>
+        <RHS>
+            <action>SQL2</action>
+        </RHS>
+    </Rule>
+    <Rule>
+        <LHS>
+            <element>Balance</element>
+            <operation>&gt;=</operation>
+            <table>Account3</table>
+            <type>RT</type>
+            <value>3000</value>
+        </LHS>
+        <RHS>
+            <action>SQL3</action>
+        </RHS>
+    </Rule>
+</RuleList>
