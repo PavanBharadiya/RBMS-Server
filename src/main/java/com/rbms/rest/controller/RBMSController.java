@@ -39,9 +39,8 @@ public class RBMSController {
      
 	
 	@RequestMapping(value="/createRule", method=RequestMethod.POST)
-	public boolean createRule(@RequestBody Rules rule) {
+	public boolean createRule(@RequestBody InterimRule rule) {
 		
-		System.out.println(rule.getElement());
 		if(rbms_service.marshallList(rule)) {
 			return true;
 		} else {

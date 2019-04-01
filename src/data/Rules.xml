@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Rules>
-    <action>Move to Premium Category</action>
-    <element>Balance</element>
-    <operation>Greater than Equal to</operation>
-    <type>Real Time</type>
-    <value>10000</value>
-</Rules>

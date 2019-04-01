@@ -40,22 +40,20 @@ import com.rbms.rest.model.*;
 public class RBMSService {
 
 	
-    public boolean marshallList(Rules rule)
-    {
+    public boolean marshallList(InterimRule rule) {
     	
     	List<Rules> listRules = unmarshallList();
         try {
             
-        	listRules.add(new Rules(rule.getType(), rule.getElement(), rule.getOperation(), rule.getValue(), rule.getAction()));
-            
+        	listRules.add(new Rules(new LHS(rule.getTable(), rule.getElement(), rule.getOperation(), rule.getType(), rule.getValue()), new RHS(rule.getAction())));
+//        	listRules.add(new Rules(new LHS(, ));
             RuleList rlist = new RuleList();
             rlist.setListRules(listRules);
             JAXBContext jc = JAXBContext.newInstance(RuleList.class);
             Marshaller ms = jc.createMarshaller();
             ms.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
     
-            //ms.marshal(rlist, System.out);
-            ms.marshal(rlist, new File("C:\\Users\\Gaurav Joshi\\Desktop\\Files\\rules.xml"));
+            ms.marshal(rlist, new File("src\\data\\RulesListNew.xml"));
             return true;
         } catch (Exception e) 
         {
@@ -69,15 +67,25 @@ public class RBMSService {
     public List<Rules> unmarshallList()
     {
         try {
-            JAXBContext jc = JAXBContext.newInstance(RuleList.class);
-            Unmarshaller ums = jc.createUnmarshaller();
-            RuleList rl = (RuleList)ums.unmarshal(new File("C:\\Users\\Gaurav Joshi\\Desktop\\Files\\rules.xml"));
-            List<Rules> rules = new ArrayList<Rules>();
+
+        	File file = new File("src\\data\\RulesListNew.xml");
             
-            for(Rules r : rl.getListRules())
-            	rules.add(r);
+            if(file.createNewFile()) {
+            	List<Rules> temp = new ArrayList<Rules>();
+            	return temp;
+            } else {
+            	JAXBContext jc = JAXBContext.newInstance(RuleList.class);
+                Unmarshaller ums = jc.createUnmarshaller();
+                RuleList rl = (RuleList)ums.unmarshal(file);
+                List<Rules> rules = new ArrayList<Rules>();
+                
+                for(Rules r : rl.getListRules())
+                	rules.add(r);
+                
+                return rules;	
+        	
+            }	
             
-            return rules;
         } catch (Exception e) {
             e.printStackTrace();
         	return null;
