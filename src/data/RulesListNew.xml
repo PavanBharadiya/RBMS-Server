@@ -24,4 +24,10 @@
             <action>SQL2</action>
         </RHS>
     </Rule>
+    <Rule>
+        <LHS/>
+        <RHS>
+            <action></action>
+        </RHS>
+    </Rule>
 </RuleList>
