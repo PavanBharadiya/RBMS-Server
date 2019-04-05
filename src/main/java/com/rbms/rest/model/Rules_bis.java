@@ -1,4 +1,4 @@
-package jaxb;
+package com.rbms.rest.model;
 
 import javax.xml.bind.annotation.*;
 
@@ -8,7 +8,7 @@ public class Rules
 	private LHS lhs;
 	private RHS rhs;
    
-	@XmlElement(name = "antecedent")
+	@XmlElement(name = "LHS")
     public LHS getLhs() 
     {
         return lhs;
@@ -18,7 +18,7 @@ public class Rules
         this.lhs = lhs;
     }
    
-    @XmlElement(name = "consequent")
+    @XmlElement(name = "RHS")
     public RHS getRhs() 
     {
         return rhs;
@@ -39,5 +39,4 @@ public class Rules
         this.lhs = lhs;
         this.rhs = rhs;
     }
-
-}//class ends here
+}

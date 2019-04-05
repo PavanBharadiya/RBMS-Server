@@ -1,44 +1,27 @@
-package com.rbms.rest.model;
+package jaxb;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 
 public class LHS 
 {
     private String table;
-    private String element;
-    private String operation;
     private String type;
-    private String value;
-    
-    @XmlElement
-    public String getTable() {
+    private List<Condition> conditionList  = new ArrayList<Condition>();
+
+    @XmlElement(name = "table")
+    public String getTable() 
+    {
         return table;
     }
-    public void setTable(String table) {
+    public void setTable(String table) 
+    {
         this.table = table;
     }
     
-    @XmlElement
-    public String getElement() 
-    {
-        return element;
-    }
-    public void setElement(String element) 
-    {
-        this.element = element;
-    }
-    
-    @XmlElement
-    public String getOperation() 
-    {
-        return operation;
-    }
-    public void setOperation(String operation) 
-    {
-        this.operation = operation;
-    }
-    
-    @XmlElement
+    @XmlElement(name = "type")
     public String getType() 
     {
         return type;
@@ -47,28 +30,28 @@ public class LHS
     {
         this.type = type;
     }
-     
-    @XmlElement
-    public String getValue() 
+    
+    @XmlElement(name = "conditon")
+    public List<Condition> getConditionList() 
     {
-        return value;
+        return conditionList;
     }
-    public void setValue(String value) {
-        this.value = value;
+    public void setConditionList(List<Condition> conditionList) 
+    {
+        this.conditionList = conditionList;
     }
     
-    public LHS() {
+    public LHS() 
+    {
         super();
     }
     
-    public LHS(String table, String element, String operation, String type, String value) {
+    public LHS(String table, String type, List<Condition> conditionList) 
+    {
         super();
         this.table = table;
-        this.element = element;
-        this.operation = operation;
         this.type = type;
-        this.value = value;
+        this.conditionList = conditionList;
     }
 
-    
-}
+}//class ends here

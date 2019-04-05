@@ -1,4 +1,4 @@
-package jaxb;
+package com.rbms.rest.model;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -7,7 +7,7 @@ public class RHS
     
     private String action;
     
-    @XmlElement(name = "action")
+    @XmlElement
     public String getAction() 
     {
         return action;
@@ -17,8 +17,7 @@ public class RHS
         this.action = action;
     }
     
-    public RHS() 
-    {
+    public RHS() {
         super();
     }
     
@@ -28,4 +27,4 @@ public class RHS
         this.action = action;
     }
     
-}//class ends here
+}
