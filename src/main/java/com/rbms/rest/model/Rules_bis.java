@@ -2,7 +2,7 @@ package com.rbms.rest.model;
 
 import javax.xml.bind.annotation.*;
 
-public class Rules 
+public class Rules_bis 
 {
     
 	private LHS lhs;
@@ -28,12 +28,12 @@ public class Rules
         this.rhs = rhs;
     }
     
-    public Rules() 
+    public Rules_bis() 
     {
         super();
     }
     
-    public Rules(LHS lhs, RHS rhs) 
+    public Rules_bis(LHS lhs, RHS rhs) 
     {
         super();
         this.lhs = lhs;

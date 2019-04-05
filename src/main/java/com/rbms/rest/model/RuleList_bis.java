@@ -5,7 +5,7 @@ import java.util.*;
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "RuleList")
-public class RuleList 
+public class RuleList_bis
 {
     private List<Rules> listRules = new ArrayList<Rules>();
 

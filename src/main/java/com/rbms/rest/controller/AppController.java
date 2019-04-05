@@ -30,11 +30,12 @@ public class AppController
         	//connection.setConnection("RBMS","postgres","clause@DM19");
             //Connection conn = connection.getConnection();
            
-            if(rbms_service.createRule(conn)) {
-            	return true;
-            } else {
-            	return false;
-            }	
+           //if(rbms_service.createRule(conn)) {
+           //	return true;
+           //} else {
+           //	return false;
+           //}	
+        	return true;
     	} catch(Exception e) {
     		e.printStackTrace();
     		return false;

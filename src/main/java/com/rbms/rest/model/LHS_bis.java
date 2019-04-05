@@ -2,7 +2,7 @@ package com.rbms.rest.model;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class LHS 
+public class LHS_bis 
 {
     private String table;
     private String element;
@@ -57,11 +57,11 @@ public class LHS
         this.value = value;
     }
     
-    public LHS() {
+    public LHS_bis() {
         super();
     }
     
-    public LHS(String table, String element, String operation, String type, String value) {
+    public LHS_bis(String table, String element, String operation, String type, String value) {
         super();
         this.table = table;
         this.element = element;

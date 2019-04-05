@@ -39,7 +39,7 @@ public class RBMSController {
      
 	
 	@RequestMapping(value="/createRule", method=RequestMethod.POST)
-	public boolean createRule(@RequestBody InterimRule rule) {
+	public boolean createRule(@RequestBody Rules rule) {
 		
 		if(rbms_service.marshallList(rule)) {
 			return true;
@@ -48,6 +48,7 @@ public class RBMSController {
 		}
 	}
 
+	/*
 	@RequestMapping(value="/createUser", method=RequestMethod.POST)
 	public boolean createUser(@RequestBody User user) {
 		
@@ -58,5 +59,5 @@ public class RBMSController {
 		}
 	}
 	
-	
+	*/
 }

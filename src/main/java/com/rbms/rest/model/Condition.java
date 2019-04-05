@@ -1,4 +1,4 @@
-package jaxb;
+package com.rbms.rest.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package jaxb;
+package com.rbms.rest.model;
 
 import java.util.*;
 import javax.xml.bind.annotation.*;

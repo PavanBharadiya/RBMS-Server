@@ -44,12 +44,12 @@ import com.rbms.rest.model.*;
 public class RBMSService {
 
 	//Marshaling
-	public boolean marshallList(InterimRule rule) {
+	public boolean marshallList(Rules rule) {
 
 		List<Rules> listRules = unmarshallList();
 		try {
 
-			listRules.add(new Rules(new LHS(rule.getTable(), rule.getElement(), rule.getOperation(), rule.getType(), rule.getValue()), new RHS(rule.getAction())));
+			listRules.add(new Rules(new LHS(rule.getTable(), rule.getElement(), rule.getOperation1(), rule.getType(), rule.getValue1()), new RHS(rule.getAction())));
 			RuleList rlist = new RuleList();
 			rlist.setListRules(listRules);
 			JAXBContext jc = JAXBContext.newInstance(RuleList.class);
@@ -180,6 +180,12 @@ public class RBMSService {
 			return null;
 		}
 	}
-
+	
+	//Mapping Correct Rule Structure
+	public static boolean mapping(RuleList rule) {
+		
+		System.out.println(rule.toString());
+		return true;
+	}
 
 }

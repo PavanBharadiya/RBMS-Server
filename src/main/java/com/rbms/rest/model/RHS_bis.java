@@ -2,7 +2,7 @@ package com.rbms.rest.model;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class RHS 
+public class RHS_bis 
 {
     
     private String action;
@@ -17,11 +17,11 @@ public class RHS
         this.action = action;
     }
     
-    public RHS() {
+    public RHS_bis() {
         super();
     }
     
-    public RHS(String action) 
+    public RHS_bis(String action) 
     {
         super();
         this.action = action;
