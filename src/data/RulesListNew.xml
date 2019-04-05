@@ -1,33 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<RuleList>
-    <Rule>
-        <LHS>
-            <element>Balance</element>
-            <operation>&gt;=</operation>
+<ruleList>
+    <rule>
+        <antecedent>
+            <conditon>
+                <clause>
+                    <operation>&gt;=</operation>
+                    <value>1000000</value>
+                </clause>
+                <conjuction>none</conjuction>
+                <element>Balance</element>
+            </conditon>
             <table>Account</table>
             <type>RT</type>
-            <value>1000000</value>
-        </LHS>
-        <RHS>
-            <action>SQL</action>
-        </RHS>
-    </Rule>
-    <Rule>
-        <LHS>
-            <element>Balance</element>
-            <operation>&gt;=</operation>
+        </antecedent>
+        <consequent>
+            <action>SQL1</action>
+        </consequent>
+    </rule>
+    <rule>
+        <antecedent>
+            <conditon>
+                <clause>
+                    <operation>&gt;=</operation>
+                    <value>50000</value>
+                </clause>
+                <clause>
+                    <operation>&lt;</operation>
+                    <value>1000000</value>
+                </clause>
+                <conjuction>and</conjuction>
+                <element>Balance</element>
+            </conditon>
+            <conditon>
+                <clause>
+                    <operation>&gt;</operation>
+                    <value>650</value>
+                </clause>
+                <clause>
+                    <operation>None</operation>
+                    <value></value>
+                </clause>
+                <conjuction>None</conjuction>
+                <element>Credit Score</element>
+            </conditon>
             <table>Account</table>
             <type>RT</type>
-            <value>1000000</value>
-        </LHS>
-        <RHS>
+        </antecedent>
+        <consequent>
             <action>SQL2</action>
-        </RHS>
-    </Rule>
-    <Rule>
-        <LHS/>
-        <RHS>
-            <action></action>
-        </RHS>
-    </Rule>
-</RuleList>
+        </consequent>
+    </rule>
+</ruleList>

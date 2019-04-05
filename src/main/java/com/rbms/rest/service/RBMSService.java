@@ -2,10 +2,12 @@ package com.rbms.rest.service;
 
 import com.rbms.rest.utils.*;
 import java.util.*;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.io.File;
 import java.util.*;
 import javax.xml.bind.*;
-
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -43,149 +45,158 @@ import com.rbms.rest.model.*;
 @Service
 public class RBMSService {
 
-	//Marshaling
-	public boolean marshallList(Rules rule) {
+    // Marshaling front end
+    public boolean marshallList(Rules rule) 
+    {   
+        /*Testing Code Starts : To be removed in final commit*/
+//        System.out.println("Testing");
+//        for(Condition cond : rule.getLhs().getConditionList())
+//        {
+//            System.out.println(cond.getElement());
+//            System.out.println(cond.getConjunction());
+//            for(Clause cl : cond.getClauseList())
+//            {
+//                System.out.println(cl.getValue());
+//                System.out.println(cl.getOperation());
+//            }
+//            
+//        }
+//        System.out.println(rule.getRhs().getAction());
+//        System.out.println("+++++++++++++++++++++++++");
+        /* Testing Code Ends */
+        
+        /* for appending old rules */
+        List<Rules> listRules = unmarshallList();
+        try {
+            listRules.add(rule);
+            RuleList rlist = new RuleList();
+            rlist.setListRules(listRules);
+            JAXBContext jc = JAXBContext.newInstance(RuleList.class);
+            Marshaller ms = jc.createMarshaller();
+            ms.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            ms.marshal(rlist, new File("src\\data\\RulesListNew.xml"));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
 
-		List<Rules> listRules = unmarshallList();
-		try {
+    // UnMarshalling front end
+    public List<Rules> unmarshallList() 
+    {
+        try {
 
-			listRules.add(new Rules(new LHS(rule.getTable(), rule.getElement(), rule.getOperation1(), rule.getType(), rule.getValue1()), new RHS(rule.getAction())));
-			RuleList rlist = new RuleList();
-			rlist.setListRules(listRules);
-			JAXBContext jc = JAXBContext.newInstance(RuleList.class);
-			Marshaller ms = jc.createMarshaller();
-			ms.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            File file = new File("src\\data\\RulesListNew.xml");
 
-			ms.marshal(rlist, new File("src\\data\\RulesListNew.xml"));
-			return true;
-		} catch (Exception e) 
-		{
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-			return false;
-		}
-	} 
+            if (file.createNewFile()) 
+            {
+                List<Rules> temp = new ArrayList<Rules>();
+                return temp;
+            } 
+            else 
+            {
+                JAXBContext jc = JAXBContext.newInstance(RuleList.class);
+                Unmarshaller ums = jc.createUnmarshaller();
+                RuleList rl = (RuleList) ums.unmarshal(file);
+                List<Rules> rules = new ArrayList<Rules>();
 
-	//UnMarshalling
-	public List<Rules> unmarshallList()
-	{
-		try {
+                for (Rules r : rl.getListRules())
+                    rules.add(r);
+                return rules;
+            }
 
-			File file = new File("src\\data\\RulesListNew.xml");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-			if(file.createNewFile()) {
-				List<Rules> temp = new ArrayList<Rules>();
-				return temp;
-			} else {
-				JAXBContext jc = JAXBContext.newInstance(RuleList.class);
-				Unmarshaller ums = jc.createUnmarshaller();
-				RuleList rl = (RuleList)ums.unmarshal(file);
-				List<Rules> rules = new ArrayList<Rules>();
+    public boolean createUser(User user) 
+    {
 
-				for(Rules r : rl.getListRules())
-					rules.add(r);
+        System.out.println(user.getAcc_num());
+        return true;
+    }
+    
+    // Create New Rules
+    public static boolean createRule(Connection connection) {
 
-				return rules;	
+        ResultSet output;
 
-			}	
+        Sql sql = new Sql(connection);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+        ArrayList<ArrayList<String>> result = unmarshallRule();
 
+        try {
+            if (result.size() > 0) {
+                for (int i = 0; i < result.size(); i++) {
 
-	public boolean createUser(User user) {
+                    if (result.get(i).get(1).equals("acc_balance")) {
 
-		System.out.println(user.getAcc_num());
-		return true;
-	}
+                        String query = "select * from " + result.get(i).get(0) + " where " + result.get(i).get(1)
+                                + result.get(i).get(2) + result.get(i).get(4) + ";";
+                        output = sql.select(query);
 
+                        while (output.next()) {
+                            ArrayList<String> temp = new ArrayList<String>();
+                            int acc_no = output.getInt("acc_no");
+                            String Branch_Code = output.getString("Branch_Code");
+                            int cust_id = output.getInt("Cust_ID");
+                            String Acc_Type = output.getString("Acc_Type");
+                            float Acc_Balance = output.getFloat("Acc_Balance");
 
-	//Create New Rules
-	public static boolean createRule(Connection connection) {
+                            String query_update = "insert into premium_account values(" + acc_no + ",'" + Branch_Code
+                                    + "'," + cust_id + ",'" + Acc_Type + "'," + Acc_Balance + ");";
+                            sql.insert(query_update);
 
-		ResultSet output;
+                            // String query_delete = "delete from account where
+                            // acc_no="+acc_no;
+                            // System.out.println(query_delete);
+                            // sql.update(query_delete);
+                            // System.out.println("done2");
 
-		Sql sql = new Sql(connection);
+                        }
+                    }
+                }
+            }
+            return true;
+        } catch (SQLException e) {
 
-		ArrayList<ArrayList<String>> result = unmarshallRule();
+            e.printStackTrace();
+            return false;
+        }
 
-		try{
-			if(result.size() > 0) {     	
-				for(int i = 0;i < result.size();i++) {
+    }
 
-					if(result.get(i).get(1).equals("acc_balance") ) {
+    // UnMarshalling Rule Creator
+    public static ArrayList<ArrayList<String>> unmarshallRule() {
+        try {
+            JAXBContext jc = JAXBContext.newInstance(RuleList.class);
+            Unmarshaller ums = jc.createUnmarshaller();
+            RuleList rulelist = (RuleList) ums.unmarshal(new File("src\\data\\RulesListNew_1.xml"));
 
-						String query = "select * from "+ result.get(i).get(0) + " where " + result.get(i).get(1)  + result.get(i).get(2) + result.get(i).get(4) + ";";
-						output = sql.select(query);
-						
-						while (output.next())
-						{
-							ArrayList<String> temp = new ArrayList<String>();  
-							int acc_no = output.getInt("acc_no");
-							String Branch_Code = output.getString("Branch_Code");
-							int cust_id = output.getInt("Cust_ID");
-							String Acc_Type = output.getString("Acc_Type");
-							float Acc_Balance = output.getFloat("Acc_Balance");
+            ArrayList<ArrayList<String>> all_rules = new ArrayList<ArrayList<String>>();
+            for (Rules rules : rulelist.getListRules()) {
+                ArrayList<String> temp = new ArrayList<String>();
+                temp.add(rules.getLhs().getTable() + "");
+                temp.add(rules.getLhs().getType() + "");
+                temp.add(rules.getRhs().getAction() + "");
+                all_rules.add(temp);
+            }
+            return all_rules;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-						
-			    			String query_update = "insert into premium_account values("+acc_no+",'"+Branch_Code+"',"+cust_id+",'"+Acc_Type+"',"+Acc_Balance+");";
-			    			sql.insert(query_update);
-							
-							//String query_delete = "delete from account where acc_no="+acc_no;
-							//System.out.println(query_delete);
-							//sql.update(query_delete);
-							//System.out.println("done2");
+    // Mapping Correct Rule Structure
+    public static boolean mapping(RuleList rule) {
 
-						}
-					}
-				}
-			}
-			return true;
-		}
-		catch (SQLException e) {
-
-			e.printStackTrace();
-			return false;
-		}
-
-	}
-
-	//UnMarshalling Rule Creater
-	public static ArrayList<ArrayList<String>> unmarshallRule() {
-		try {
-			JAXBContext jc = JAXBContext.newInstance(RuleList.class);
-			Unmarshaller ums = jc.createUnmarshaller();
-			RuleList rulelist = (RuleList) ums.unmarshal(new File("src\\data\\RulesListNew_1.xml"));
-
-			ArrayList<ArrayList<String>> all_rules = new ArrayList<ArrayList<String>>();
-			for (Rules rules : rulelist.getListRules()) 
-			{
-				ArrayList<String> temp = new ArrayList<String>();
-
-				temp.add(rules.getLhs().getTable()+"");
-				temp.add(rules.getLhs().getElement()+"");
-				temp.add(rules.getLhs().getOperation()+"");
-				temp.add(rules.getLhs().getType()+"");
-				temp.add(rules.getLhs().getValue()+"");
-				temp.add(rules.getRhs().getAction()+"");
-				all_rules.add(temp);
-			}
-			return all_rules;
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	//Mapping Correct Rule Structure
-	public static boolean mapping(RuleList rule) {
-		
-		System.out.println(rule.toString());
-		return true;
-	}
+        System.out.println(rule.toString());
+        return true;
+    }
 
 }
