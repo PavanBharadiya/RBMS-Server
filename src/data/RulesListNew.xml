@@ -5,49 +5,123 @@
             <conditon>
                 <clause>
                     <operation>&gt;=</operation>
-                    <value>1000000</value>
+                    <value>20001</value>
                 </clause>
                 <conjuction>none</conjuction>
-                <element>Balance</element>
+                <element>acc_balance</element>
             </conditon>
             <table>Account</table>
-            <type>RT</type>
+            <type>BT</type>
         </antecedent>
         <consequent>
-            <action>SQL1</action>
+            <action>insert into premium_account values(?,?,?,?,?,?,?,?,?);</action>
         </consequent>
     </rule>
     <rule>
         <antecedent>
             <conditon>
                 <clause>
-                    <operation>&gt;=</operation>
-                    <value>50000</value>
+                    <operation>&lt;=</operation>
+                    <value>10000</value>
                 </clause>
-                <clause>
-                    <operation>&lt;</operation>
-                    <value>1000000</value>
-                </clause>
-                <conjuction>and</conjuction>
-                <element>Balance</element>
-            </conditon>
-            <conditon>
-                <clause>
-                    <operation>&gt;</operation>
-                    <value>650</value>
-                </clause>
-                <clause>
-                    <operation>None</operation>
-                    <value></value>
-                </clause>
-                <conjuction>None</conjuction>
-                <element>Credit Score</element>
+                <conjuction>none</conjuction>
+                <element>acc_balance</element>
             </conditon>
             <table>Account</table>
-            <type>RT</type>
+            <type>BT</type>
         </antecedent>
         <consequent>
-            <action>SQL2</action>
+            <!-- action >update account set acc_balance=CAST (acc_balance AS INTEGER)-100 where acc_no=?; -->
+            <action>insert into penalty_account values(?,?,?,?,?,?,?,?,?);</action>
+        </consequent>
+    </rule>
+    <rule>
+        <antecedent>
+            <conditon>
+                <clause>
+                    <operation>&lt;=</operation>
+                    <value>CURRENT_DATE-7</value>
+                </clause>
+                <conjuction>none</conjuction>
+                <element>date(LastTransactionTime)</element>
+            </conditon>
+            <table>account</table>
+            <type>BT</type>
+        </antecedent>
+        <consequent>
+            <action>insert into dormant_account values(?,?,?,?,?,?,?,?,?);</action>
+        </consequent>
+    </rule>
+    <rule>
+        <antecedent>
+            <conditon>
+                <clause>
+                    <operation>=</operation>
+                    <value>Student_Savings</value>
+                </clause>
+                <clause>
+                    <operation>=</operation>
+                    <value>Govt_Savings</value>
+                </clause>
+                <conjuction>or</conjuction>
+                <element>Acc_type</element>
+            </conditon>
+            <table>Account</table>
+            <type>BT</type>
+        </antecedent>
+        <consequent>
+            <action>insert into special_account values(?,?,?,?,?,?,?,?,?);</action>
+        </consequent>
+    </rule>
+    <rule>
+        <antecedent>
+            <conditon>
+                <clause>
+                    <operation>&lt;=</operation>
+                    <value>CURRENT_DATE-90</value>
+                </clause>
+                <conjuction>none</conjuction>
+                <element>date(PasswdLastUpdatedDate)</element>
+            </conditon>
+            <table>customer</table>
+            <type>BT</type>
+        </antecedent>
+        <consequent>
+            <action>update customer set Cust_passwd ='DEFAULT' where Cust_ID=?</action>
+        </consequent>
+    </rule> -->
+    <rule>
+        <antecedent>
+            <conditon>
+                <clause>
+                    <operation>&gt;=</operation>
+                    <value>10</value>
+                </clause>
+                <conjuction>none</conjuction>
+                <element>Transaction_count</element>
+            </conditon>
+            <table>account</table>
+            <type>BT</type>
+        </antecedent>
+        <consequent>
+            <action>update account set credit_score = CAST (credit_score AS INTEGER) + CAST (Transaction_count AS INTEGER)/10, Transaction_count =  CAST (Transaction_count AS INTEGER) - 10*(CAST (Transaction_count AS INTEGER)/10) where Acc_No=?;</action>
+        </consequent>
+    </rule>
+    <rule>
+        <antecedent>
+            <conditon>
+                <clause>
+                    <operation>&lt;=</operation>
+                    <value>CURRENT_DATE-90</value>
+                </clause>
+                <conjuction>none</conjuction>
+                <element>date(LastQrtrFeeDeductDate)</element>
+            </conditon>
+            <table>account</table>
+            <type>BT</type>
+        </antecedent>
+        <consequent>
+            <action>update account set LastQrtrFeeDeductDate = CURRENT_DATE, acc_balance = CAST (acc_balance AS INTEGER) - CAST (acc_balance AS INTEGER)/200 where Acc_no=?;</action>
         </consequent>
     </rule>
 </ruleList>
