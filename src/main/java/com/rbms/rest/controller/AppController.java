@@ -1,5 +1,6 @@
 package com.rbms.rest.controller;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -76,6 +77,5 @@ public class AppController
         System.out.println(account_number);
         return true;
     }
-    
     
 }
