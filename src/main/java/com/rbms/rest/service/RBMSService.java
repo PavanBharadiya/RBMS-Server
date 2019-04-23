@@ -293,7 +293,7 @@ public class RBMSService {
     	}
     }
     
-    public static void getTransaction(String acc_no,Connection connection)
+    public static TransactionTable getTransaction(String acc_no,Connection connection)
     {
     	ResultSet output;
     	Sql sql = new Sql(connection);
@@ -328,12 +328,14 @@ public class RBMSService {
 //    					System.out.println(output.getString(rsmd.getColumnLabel(k)));
 //    			}						
     		}
+    		return transactionTable;
 
     		
     	}
     	catch(Exception e) {
     		e.printStackTrace();
     		//return new ArrayList<String>();
+    		return null;
     		
     	}
     }
