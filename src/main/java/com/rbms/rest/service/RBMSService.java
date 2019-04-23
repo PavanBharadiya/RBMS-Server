@@ -49,7 +49,6 @@ public class RBMSService {
     public boolean marshallList(Rules rule) 
     {   
         /* for appending old rules */
-    	
         List<Rules> listRules = unmarshallList();
         try {
             listRules.add(rule);
