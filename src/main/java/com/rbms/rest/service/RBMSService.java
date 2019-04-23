@@ -293,6 +293,51 @@ public class RBMSService {
     	}
     }
     
+    public static void getTransaction(String acc_no,Connection connection)
+    {
+    	ResultSet output;
+    	Sql sql = new Sql(connection);
+    	TransactionTable transactionTable = new TransactionTable();
+    	
+    	try 
+    	{
+    		String query = "select * from transaction where acc_no = '" + acc_no+"'";
+    		System.out.println(query);
+    		output = sql.select(query);
+    		
+    		ResultSetMetaData rsmd = output.getMetaData();
+    		
+    		while (output.next())
+    		{
+    			System.out.println();
+    			int k=1;
+    			transactionTable.setTx_Id(output.getString(rsmd.getColumnLabel(k++)));
+    			transactionTable.setBranch_Code(output.getString(rsmd.getColumnLabel(k++)));
+    			transactionTable.setAcc_No(output.getString(rsmd.getColumnLabel(k++)));
+    			transactionTable.setCust_ID(output.getString(rsmd.getColumnLabel(k++)));
+    			transactionTable.setTx_Type(output.getString(rsmd.getColumnLabel(k++)));
+    			transactionTable.setTx_time(output.getString(rsmd.getColumnLabel(k++)));
+    			transactionTable.setTx_desc(output.getString(rsmd.getColumnLabel(k++)));
+    			transactionTable.setAcc_Balance(output.getString(rsmd.getColumnLabel(k++)));
+    			transactionTable.setTx_amount(output.getString(rsmd.getColumnLabel(k++)));
+
+
+//    			for(int k=1 ; k<=rsmd.getColumnCount(); k++)
+//    			{
+//    				
+//    					System.out.println(output.getString(rsmd.getColumnLabel(k)));
+//    			}						
+    		}
+
+    		
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    		//return new ArrayList<String>();
+    		
+    	}
+    }
+    
     
     public static AccountTable fetchDetails(String acc_no,Connection connection) 
     {
