@@ -50,5 +50,14 @@ public class AppController
 		System.out.println(account_number);
 		return true;
 	}
+
+	
+	@RequestMapping(value="/getTransactions", method=RequestMethod.POST)
+	public boolean getTransactions(@RequestBody String account_number) {
+		
+		System.out.println(account_number);
+		return true;
+	}
+	
 	
 }
