@@ -24,7 +24,7 @@ public class AppController
 {
     @Autowired
     RBMSService rbms_service;
-    
+
     @RequestMapping(value="/init", method=RequestMethod.GET)
     public boolean createRule()
     {
@@ -32,65 +32,114 @@ public class AppController
         try {
             System.out.println("Setting connection");
             //Connection conn = connection.establishConnection();
-            
-           connection.setConnection("RBMS","postgres","MT2018091@iiitb");
-           Connection conn1 = connection.getConnection();
+
+            connection.setConnection("RBMS","postgres","MT2018091@iiitb");
+            Connection conn1 = connection.getConnection();
             System.out.println("conn="+conn1);
-           
-           if(rbms_service.createRule(conn1)) {
-            return true;
-           } else {
-            return false;
-           }    
+
+            if(rbms_service.createRule(conn1)) {
+                return true;
+            } else {
+                return false;
+            }    
         } catch(Exception e) {
             e.printStackTrace();
             return false;
         }
-        
+
     }
-    
+
     @RequestMapping(value="/getAccount", method=RequestMethod.POST)
     public AccountTable getAccount(@RequestBody String account_number) {
-        
+
         DatabaseConnection connection = new DatabaseConnection();
         try {
             System.out.println("Setting connection");
             //Connection conn = connection.establishConnection();
-            
-           connection.setConnection("RBMS","postgres","MT2018091@iiitb");
-           Connection conn1 = connection.getConnection();
+
+            connection.setConnection("RBMS","postgres","MT2018091@iiitb");
+            Connection conn1 = connection.getConnection();
             System.out.println("conn="+conn1);
-           
-           AccountTable accountTable = rbms_service.fetchAccountDetails(account_number,conn1);
-           return accountTable;
-                
+
+            AccountTable accountTable = rbms_service.fetchAccountDetails(account_number,conn1);
+            return accountTable;
+
         } catch(Exception e) {
             e.printStackTrace();
             return null;
         }
-        
-    }
 
+    }
     
-    @RequestMapping(value="/getTransactions", method=RequestMethod.POST)
-    public TransactionTable getTransactions(@RequestBody String account_number) {
-        
-    	DatabaseConnection connection = new DatabaseConnection();
+    @RequestMapping(value="/updateTables", method=RequestMethod.POST)
+    public boolean updateTables(@RequestBody AccountTable accountTable) {
+
+        DatabaseConnection connection = new DatabaseConnection();
         try {
             System.out.println("Setting connection");
             //Connection conn = connection.establishConnection();
-            
-           connection.setConnection("RBMS","postgres","MT2018091@iiitb");
-           Connection conn1 = connection.getConnection();
+
+            connection.setConnection("RBMS","postgres","MT2018091@iiitb");
+            Connection conn1 = connection.getConnection();
             System.out.println("conn="+conn1);
-           
-            TransactionTable transactionTable = rbms_service.fetchTransactions(account_number,conn1);
-           return transactionTable;
-                
+
+            if(rbms_service.updateAccountDetails(accountTable,conn1))
+                return true;
+            else 
+                return false;
+
         } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+
+
+    @RequestMapping(value="/refresh", method=RequestMethod.POST)
+    public boolean refresh() {
+
+        DatabaseConnection connection = new DatabaseConnection();
+        try {
+            System.out.println("Setting connection");
+            //Connection conn = connection.establishConnection();
+
+            connection.setConnection("RBMS","postgres","MT2018091@iiitb");
+            Connection conn1 = connection.getConnection();
+            System.out.println("conn="+conn1);
+
+            return rbms_service.runBatchRule(conn1);
+
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    
+    
+    @RequestMapping(value="/getTransactions", method=RequestMethod.POST)
+    public TransactionTable getTransactions(@RequestBody String account_number) {
+
+        DatabaseConnection connection = new DatabaseConnection();
+        try {
+            System.out.println("Setting connection");
+            //Connection conn = connection.establishConnection();
+
+            connection.setConnection("RBMS","postgres","MT2018091@iiitb");
+            Connection conn1 = connection.getConnection();
+            System.out.println("conn="+conn1);
+
+            TransactionTable transactionTable = rbms_service.fetchTransactions(account_number,conn1);
+            return transactionTable;
+
+        } catch(Exception e)
+        {
             e.printStackTrace();
             return null;
         }
     }
-    
+
 }
