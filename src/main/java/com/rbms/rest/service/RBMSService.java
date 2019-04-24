@@ -110,7 +110,7 @@ public class RBMSService {
 
     	ArrayList<ArrayList<String>> result = unmarshallRule();
     	System.out.println("result:"+result);
-    	fetchDetails("1",connection);
+    	fetchAccountDetails("1",connection);
 //    	try {
 //    		if(result.size() > 0) {
 //    			System.out.println(result);
@@ -293,7 +293,7 @@ public class RBMSService {
     	}
     }
     
-    public static TransactionTable getTransaction(String acc_no,Connection connection)
+    public static TransactionTable fetchTransactions(String acc_no,Connection connection)
     {
     	ResultSet output;
     	Sql sql = new Sql(connection);
@@ -341,7 +341,7 @@ public class RBMSService {
     }
     
     
-    public static AccountTable fetchDetails(String acc_no,Connection connection) 
+    public static AccountTable fetchAccountDetails(String acc_no,Connection connection) 
     {
 
     	ResultSet output;
@@ -379,7 +379,7 @@ public class RBMSService {
     	}
     }
 
-    public static void updateDetailsAccount(AccountTable accountTable,Connection connection) 
+    public static void updateAccountDetails(AccountTable accountTable,Connection connection) 
     {
 
     	ResultSet output;

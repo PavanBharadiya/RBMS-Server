@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rbms.rest.model.AccountTable;
+import com.rbms.rest.model.TransactionTable;
 import com.rbms.rest.service.RBMSService;
 import com.rbms.rest.utils.DatabaseConnection;
 
@@ -60,7 +61,7 @@ public class AppController
            Connection conn1 = connection.getConnection();
             System.out.println("conn="+conn1);
            
-           AccountTable accountTable = rbms_service.fetchDetails(account_number,conn1);
+           AccountTable accountTable = rbms_service.fetchAccountDetails(account_number,conn1);
            return accountTable;
                 
         } catch(Exception e) {
@@ -72,10 +73,24 @@ public class AppController
 
     
     @RequestMapping(value="/getTransactions", method=RequestMethod.POST)
-    public boolean getTransactions(@RequestBody String account_number) {
+    public TransactionTable getTransactions(@RequestBody String account_number) {
         
-        System.out.println(account_number);
-        return true;
+    	DatabaseConnection connection = new DatabaseConnection();
+        try {
+            System.out.println("Setting connection");
+            //Connection conn = connection.establishConnection();
+            
+           connection.setConnection("RBMS","postgres","MT2018091@iiitb");
+           Connection conn1 = connection.getConnection();
+            System.out.println("conn="+conn1);
+           
+            TransactionTable transactionTable = rbms_service.fetchTransactions(account_number,conn1);
+           return transactionTable;
+                
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
 }
