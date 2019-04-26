@@ -47,6 +47,14 @@ public class RBMSController {
 			return false;
 		}
 	}
+
+	@RequestMapping(value="/getAccountNumber", method=RequestMethod.POST)
+	public String user_login(@RequestBody String cust_id) {
+		
+		System.out.println(cust_id);
+		return rbms_service.getAccountNumber(cust_id);	
+	}
+	
 	
 	/*
 	@RequestMapping(value="/createUser", method=RequestMethod.POST)

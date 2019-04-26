@@ -11,6 +11,7 @@ public class TransactionTable
 	private String tx_desc;
 	private String acc_balance;
 	private String tx_amount;
+	
     public String getTx_id() {
         return tx_id;
     }

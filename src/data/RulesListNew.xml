@@ -31,7 +31,6 @@
             <type>BT</type>
         </antecedent>
         <consequent>
-            <!-- action >update account set acc_balance=CAST (acc_balance AS INTEGER)-100 where acc_no=?; -->
             <action>insert into penalty_account values(?,?,?,?,?,?,?,?,?);</action>
         </consequent>
     </rule>
@@ -89,7 +88,7 @@
         <consequent>
             <action>update customer set Cust_passwd ='DEFAULT' where Cust_ID=?</action>
         </consequent>
-    </rule> -->
+    </rule>
     <rule>
         <antecedent>
             <conditon>
@@ -122,44 +121,6 @@
         </antecedent>
         <consequent>
             <action>update account set LastQrtrFeeDeductDate = CURRENT_DATE, acc_balance = CAST (acc_balance AS INTEGER) - CAST (acc_balance AS INTEGER)/200 where Acc_no=?;</action>
-        </consequent>
-    </rule>
-    <rule>
-        <antecedent>
-            <conditon>
-                <clause>
-                    <operation>&gt;=</operation>
-                    <value>4512</value>
-                </clause>
-                <clause>
-                    <operation>&lt;=</operation>
-                    <value>4</value>
-                </clause>
-                <conjuction>and</conjuction>
-                <element>Balance</element>
-            </conditon>
-            <table>Account</table>
-            <type>RT</type>
-        </antecedent>
-        <consequent>
-            <action>SQL Gaurav</action>
-        </consequent>
-    </rule>
-    <rule>
-        <antecedent>
-            <conditon>
-                <clause>
-                    <operation>&gt;=</operation>
-                    <value>45545454</value>
-                </clause>
-                <conjuction>none</conjuction>
-                <element>Credit Score</element>
-            </conditon>
-            <table>Account</table>
-            <type>RT</type>
-        </antecedent>
-        <consequent>
-            <action>SQL GAURAV</action>
         </consequent>
     </rule>
 </ruleList>

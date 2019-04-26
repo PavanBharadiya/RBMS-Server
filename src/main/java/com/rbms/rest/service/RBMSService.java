@@ -57,7 +57,7 @@ public class RBMSService {
             JAXBContext jc = JAXBContext.newInstance(RuleList.class);
             Marshaller ms = jc.createMarshaller();
             ms.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            ms.marshal(rlist, new File("src\\data\\RulesListNew1.xml"));
+            ms.marshal(rlist, new File("src\\data\\RulesListNew.xml"));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,7 +71,7 @@ public class RBMSService {
     {
         try {
 
-            File file = new File("src\\data\\RulesListNew1.xml");
+            File file = new File("src\\data\\RulesListNew.xml");
 
             if (file.createNewFile()) 
             {
@@ -318,12 +318,12 @@ public class RBMSService {
         }
     }
 
-    public static TransactionTable fetchTransactions(String acc_no,Connection connection)
+    public static List<TransactionTable> fetchTransactions(String acc_no,Connection connection)
     {
         ResultSet output;
         Sql sql = new Sql(connection);
-        TransactionTable transactionTable = new TransactionTable();
 
+        List<TransactionTable> list = new ArrayList<TransactionTable>();
         try 
         {
             String query = "select * from transaction where acc_no = '" + acc_no+"'";
@@ -336,6 +336,8 @@ public class RBMSService {
             {
                 System.out.println();
                 int k=1;
+                TransactionTable transactionTable = new TransactionTable();
+
                 transactionTable.setTx_id(output.getString(rsmd.getColumnLabel(k++)));
                 transactionTable.setBranch_code(output.getString(rsmd.getColumnLabel(k++)));
                 transactionTable.setAcc_no(output.getString(rsmd.getColumnLabel(k++)));
@@ -345,9 +347,9 @@ public class RBMSService {
                 transactionTable.setTx_desc(output.getString(rsmd.getColumnLabel(k++)));
                 transactionTable.setAcc_balance(output.getString(rsmd.getColumnLabel(k++)));
                 transactionTable.setTx_amount(output.getString(rsmd.getColumnLabel(k++)));					
+                list.add(transactionTable);
             }
-            return transactionTable;
-
+            return list;
 
         }
         catch(Exception e) {
@@ -426,4 +428,65 @@ public class RBMSService {
     }
 
 
+    public boolean updateTransactionDetails(TransactionTable transactionTable, Connection connection) 
+    {
+
+    	System.out.println(transactionTable);
+        ResultSet output;
+        Sql sql = new Sql(connection);
+
+        try {
+            String tx_id        = transactionTable.getTx_id();
+            String branch_code  = transactionTable.getBranch_code();
+            String acc_no       = transactionTable.getAcc_no();
+            String cust_id      = transactionTable.getCust_id();
+            String tx_type      = transactionTable.getTx_type();
+            String tx_time      = transactionTable.getTx_time();
+            String tx_desc      = transactionTable.getTx_desc();
+            String acc_balance  = transactionTable.getAcc_balance();
+            String tx_amount    = transactionTable.getTx_amount();
+            
+			PreparedStatement stmt=connection.prepareStatement("INSERT INTO transaction (tx_ID, branch_code, acc_no, cust_id, tx_type, tx_time, tx_desc, acc_balance, tx_amount) VALUES(?,?,?,?,?,?,?,?,?)");  
+			stmt.setString(1, tx_id);  
+			stmt.setString(2, branch_code);
+			stmt.setString(3, acc_no);
+			stmt.setString(4, cust_id);  
+			stmt.setString(5, tx_type);
+			stmt.setString(6, tx_time);
+			stmt.setString(7, tx_desc);  
+			stmt.setString(8, acc_balance);
+			stmt.setString(9, tx_amount);
+			  
+			int i=stmt.executeUpdate();  
+
+			if(i!=0)
+				return true;
+			else
+				return false;
+            
+        }   
+        catch(Exception e) 
+        {   
+        	return false;
+        }
+    }
+    
+    public String getAccountNumber(String id) {
+    	
+    	String account_num;
+    	DatabaseConnection connection = new DatabaseConnection();
+    	try {
+    		
+    		Connection conn = connection.establishConnection();
+    		String sql = "SELECT acc_no FROM account where cust_id='" + id + "';";
+    		Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            return rs.getString(0);
+            
+    	} catch(Exception e) {
+    		return null;
+    	}
+    	
+    }
 }
