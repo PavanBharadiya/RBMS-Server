@@ -110,8 +110,24 @@ public class RBMSService {
         ResultSet output;
 
         ArrayList<ArrayList<String>> result = unmarshallRule();
-        System.out.println("result:"+result);
-        return true;
+//        System.out.println("result:"+result);
+        try {
+            if(result.size() > 0) {
+//                System.out.println(result);
+                for(int i = 0;i < result.size();i++) {
+                    if(result.get(i).get(0).equals("BT")) {
+                        batch(result,connection,i);
+
+                    }
+                }
+            }
+            return true;
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+//        return true;
     }
 
     // UnMarshalling Rule Creator
@@ -200,7 +216,7 @@ public class RBMSService {
 
         ArrayList<ArrayList<String>> result = unmarshallRule();
         System.out.println("result:"+result);
-        fetchAccountDetails("1",connection);
+//        fetchAccountDetails("1",connection);
         try {
             if(result.size() > 0) {
                 System.out.println(result);
@@ -249,14 +265,14 @@ public class RBMSService {
     public static void batch(ArrayList<ArrayList<String>> result,Connection connection,int i) {
         ResultSet output;
         Sql sql = new Sql(connection);
-        System.out.println("Hello");
+//        System.out.println("Hello");
         try {
             output = sql.select(result.get(i).get(2));
             ResultSetMetaData rsmd = output.getMetaData();					
 
             if(result.get(i).get(3).contentEquals("insert")) {
                 String query_update = result.get(i).get(1);
-                System.out.println(query_update);
+//                System.out.println(query_update);
                 while (output.next())
                 {
                     System.out.println();
@@ -320,14 +336,14 @@ public class RBMSService {
             {
                 System.out.println();
                 int k=1;
-                transactionTable.setTx_Id(output.getString(rsmd.getColumnLabel(k++)));
-                transactionTable.setBranch_Code(output.getString(rsmd.getColumnLabel(k++)));
-                transactionTable.setAcc_No(output.getString(rsmd.getColumnLabel(k++)));
-                transactionTable.setCust_ID(output.getString(rsmd.getColumnLabel(k++)));
-                transactionTable.setTx_Type(output.getString(rsmd.getColumnLabel(k++)));
+                transactionTable.setTx_id(output.getString(rsmd.getColumnLabel(k++)));
+                transactionTable.setBranch_code(output.getString(rsmd.getColumnLabel(k++)));
+                transactionTable.setAcc_no(output.getString(rsmd.getColumnLabel(k++)));
+                transactionTable.setCust_id(output.getString(rsmd.getColumnLabel(k++)));
+                transactionTable.setTx_type(output.getString(rsmd.getColumnLabel(k++)));
                 transactionTable.setTx_time(output.getString(rsmd.getColumnLabel(k++)));
                 transactionTable.setTx_desc(output.getString(rsmd.getColumnLabel(k++)));
-                transactionTable.setAcc_Balance(output.getString(rsmd.getColumnLabel(k++)));
+                transactionTable.setAcc_balance(output.getString(rsmd.getColumnLabel(k++)));
                 transactionTable.setTx_amount(output.getString(rsmd.getColumnLabel(k++)));					
             }
             return transactionTable;

@@ -2,26 +2,24 @@ package com.rbms.rest.model;
 
 public class AccountAndTransaction 
 {
-    TransactionTable transactionTable;
-    AccountTable accountTable;
-    
-    public TransactionTable getTransactionTable() {
-        return transactionTable;
+    TransactionTable transaction_table;
+    AccountTable account_table;
+    public TransactionTable getTransaction_table() {
+        return transaction_table;
     }
-    public void setTransactionTable(TransactionTable transactionTable) {
-        this.transactionTable = transactionTable;
+    public void setTransaction_table(TransactionTable transaction_table) {
+        this.transaction_table = transaction_table;
     }
-    public AccountTable getAccountTable() {
-        return accountTable;
+    public AccountTable getAccount_table() {
+        return account_table;
     }
-    public void setAccountTable(AccountTable accountTable) {
-        this.accountTable = accountTable;
+    public void setAccount_table(AccountTable account_table) {
+        this.account_table = account_table;
     }
-    
-    public AccountAndTransaction(TransactionTable transactionTable, AccountTable accountTable) {
+    public AccountAndTransaction(TransactionTable transaction_table, AccountTable account_table) {
         super();
-        this.transactionTable = transactionTable;
-        this.accountTable = accountTable;
+        this.transaction_table = transaction_table;
+        this.account_table = account_table;
     }
     public AccountAndTransaction() {
         super();
