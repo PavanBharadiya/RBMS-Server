@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rbms.rest.model.AccountAndTransaction;
 import com.rbms.rest.model.AccountTable;
 import com.rbms.rest.model.TransactionTable;
 import com.rbms.rest.service.RBMSService;
@@ -50,7 +51,7 @@ public class AppController
     }
 
     @RequestMapping(value="/getAccount", method=RequestMethod.POST)
-    public AccountTable getAccount(@RequestBody String account_number) {
+    public AccountAndTransaction getAccount(@RequestBody String account_number) {
 
         DatabaseConnection connection = new DatabaseConnection();
         try {
@@ -62,7 +63,11 @@ public class AppController
             System.out.println("conn="+conn1);
 
             AccountTable accountTable = rbms_service.fetchAccountDetails(account_number,conn1);
-            return accountTable;
+            TransactionTable transactionTable = rbms_service.fetchTransactions(account_number, conn1);
+            AccountAndTransaction accountAndTransaction = new AccountAndTransaction();
+            accountAndTransaction.setAccount_table(accountTable);
+            accountAndTransaction.setTransaction_table(transactionTable);
+            return accountAndTransaction;
 
         } catch(Exception e) {
             e.printStackTrace();
